@@ -22,7 +22,7 @@ public class GifController {
 
     @ApiOperation(value = "Get gif by currency code")
     @GetMapping(value = "/{currencyCode}", produces = MediaType.IMAGE_GIF_VALUE)
-    public ResponseEntity<byte[]> getGif(@PathVariable("currencyCode") String currencyCode) {
+    public ResponseEntity<byte[]> getGif(@PathVariable("currencyCode") String currencyCode) { //FIXME Validation (can't be black, format)
 
         byte[] array = giphyService.getGif(currencyCode);
 

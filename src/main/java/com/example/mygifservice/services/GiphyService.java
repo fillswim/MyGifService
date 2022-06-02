@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 @Service
 public class GiphyService {
@@ -27,27 +28,29 @@ public class GiphyService {
     }
 
     public byte[] getGif(String currencyCode) {
+        //FIXME Validation  Objects.requireNonNull(currencyCode, "currencyCode is required");  or Lombok NotNull.
 
-        // Get profit status
+        // Get profit status //TODO You don't need to comment each line. :)
         String profitStatus = foerService.getRateStatus(currencyCode);
 
         // Get answer from api.giphy.com
-        String giphyResponse = loadResponseFromGiphy(profitStatus);
+        String giphyResponse = loadResponseFromGiphy(profitStatus); //FIXME You can do it without the method.
+        //TODO Why can't it return a serialized object?
 
         // Get download link
-        String link = linkService.getLink(giphyResponse);
+        String link = linkService.getLink(giphyResponse); //TODO I would merge loadResponseFromGiphy with getLink.
 
         // Download gif
-        byte[] gifBytes = getGifBytes(link);
+        byte[] gifBytes = getGifBytes(link); //FIXME No need for the variable.
 
         return gifBytes;
     }
 
-    private String loadResponseFromGiphy(String status) {
+    private String loadResponseFromGiphy(String status) { //FIXME Input Validation
 
-        String giphyResponse = giphyClient.getGif(giphyAppId, status);
+        String giphyResponse = giphyClient.getGif(giphyAppId, status); //FIXME Error handling
 
-        return giphyResponse;
+        return giphyResponse; //FIXME You don't the variable here
     }
 
     private byte[] getGifBytes(String link) {

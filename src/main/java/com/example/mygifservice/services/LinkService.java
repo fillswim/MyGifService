@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class LinkService {
 
-    public String getLink(String jsonString) {
+    public String getLink(String jsonString) { //FIXME Input validation
 
         JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
 
