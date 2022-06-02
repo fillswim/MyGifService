@@ -1,6 +1,7 @@
 package com.example.mygifservice.services;
 
 import com.example.mygifservice.clients.FOERClient;
+import com.example.mygifservice.exceptions.CurrencyNotFoundException;
 import com.example.mygifservice.models.Rates;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,10 @@ public class FOERService {
 
         Rates latestRates = foerClient.getLatestRates(foerAppId);
         Double latestRate = latestRates.getRates().get(currencyCode);
+
+        if (historicalRate == null || latestRate == null) {
+            throw new CurrencyNotFoundException("Currency not found");
+        }
 
         log.info("IN getRateStatus() - historicalRate: {}, latestRate: {}", historicalRate, latestRate);
 
