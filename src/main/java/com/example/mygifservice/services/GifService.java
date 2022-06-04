@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URL;
 
+import static com.example.mygifservice.models.ProfitStatus.BROKE;
+import static com.example.mygifservice.models.ProfitStatus.REACH;
+
 @Service
 public class GifService {
 
@@ -43,9 +46,15 @@ public class GifService {
         String giphyServiceResponse = null;
 
         switch (profitStatus) {
-            case REACH -> giphyServiceResponse = loadResponseFromGiphy(giphyTagReach);
-            case BROKE -> giphyServiceResponse = loadResponseFromGiphy(giphyTagBroke);
-            case ZERO -> giphyServiceResponse = loadResponseFromGiphy(giphyTagZero);
+            case BROKE:
+                giphyServiceResponse = loadResponseFromGiphy(giphyTagBroke);
+                break;
+            case REACH:
+                giphyServiceResponse = loadResponseFromGiphy(giphyTagReach);
+                break;
+            default:
+                giphyServiceResponse = loadResponseFromGiphy(giphyTagZero);
+                break;
         }
 
         String link = linkService.getLink(giphyServiceResponse);
