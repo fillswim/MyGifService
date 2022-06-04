@@ -2,6 +2,7 @@ package com.example.mygifservice.services;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class LinkService {
 
-    public String getLink(String jsonString) {
+    public String getLink(@NonNull String jsonString) {
 
         JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
 
@@ -23,21 +24,15 @@ public class LinkService {
                 .getAsJsonObject().get("url")
                 .getAsString();
 
-        log.info("IN getLink() - wrong link: {}", wrongLink);
-
-        String rightLink = replaceLink(wrongLink);
-
-        return rightLink;
+        return replaceLink(wrongLink);
     }
 
-    private String replaceLink(String wrongLink) {
+    private String replaceLink(@NonNull String wrongLink) {
 
         Pattern pattern = Pattern.compile("media\\d.giphy.com");
         Matcher matcher = pattern.matcher(wrongLink);
 
         String rightLink = matcher.replaceFirst("i.giphy.com");
-
-        log.info("IN replaceLink() - right link: {}", rightLink);
 
         return rightLink;
     }
