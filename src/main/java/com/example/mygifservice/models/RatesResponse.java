@@ -2,6 +2,7 @@ package com.example.mygifservice.models;
 
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 @Setter
@@ -9,11 +10,11 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Rates {
+public class RatesResponse {
 
     String disclaimer;
     String license;
-    String timestamp;
+    Long timestamp;
     String base;
     Map<String, Double> rates;
 
