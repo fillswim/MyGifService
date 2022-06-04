@@ -1,6 +1,7 @@
 package com.example.mygifservice.services;
 
 import com.example.mygifservice.clients.GiphyClient;
+import com.example.mygifservice.models.ProfitStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,13 +16,14 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class GiphyServiceTest {
+class GifServiceTest {
 
     @Value("${giphy.app.id}")
     private String giphyAppId;
@@ -36,7 +38,7 @@ class GiphyServiceTest {
     private String rightUrl;
 
     @MockBean
-    private FOERService foerService;
+    private RateService rateService;
 
     @MockBean
     private GiphyClient giphyClient;
@@ -45,26 +47,26 @@ class GiphyServiceTest {
     private LinkService linkService;
 
     @Autowired
-    private GiphyService giphyService;
+    private GifService gifService;
 
     @BeforeEach
     public void init() throws IOException, URISyntaxException {
 
         // FOERService answer
-        Mockito.when(foerService.getRateStatus(quotedCurrency))
-                .thenReturn(giphyTagBroke);
+        Mockito.when(rateService.getRateStatus(quotedCurrency))
+                .thenReturn(ProfitStatus.BROKE);
 
         // GiphyClient answer
         String giphyJsonName = "static/giphyResponse.json";
         Path giphyPath = Paths.get(getClass().getResource("/" + giphyJsonName).toURI());
-        String giphyJsonString = Files.readString(giphyPath);
+        Optional<String> giphyJsonString = Optional.of(Files.readString(giphyPath));
 
         Mockito.when(giphyClient.getGif(giphyAppId, giphyTagBroke))
                 .thenReturn(giphyJsonString);
 
 
         // LinkService answer
-        Mockito.when(linkService.getLink(giphyJsonString))
+        Mockito.when(linkService.getLink(giphyJsonString.get()))
                 .thenReturn(rightUrl);
 
     }
@@ -77,7 +79,7 @@ class GiphyServiceTest {
         Path gifPath = Paths.get(getClass().getResource("/" + gifName).toURI());
         byte[] downloadByteArray = Files.readAllBytes(gifPath);
 
-        byte[] testByteArray = giphyService.getGif(quotedCurrency);
+        byte[] testByteArray = gifService.getGif(quotedCurrency);
 
         assertNotNull(testByteArray);
         assertEquals(downloadByteArray.length, testByteArray.length);

@@ -1,7 +1,7 @@
 package com.example.mygifservice.cleints;
 
-import com.example.mygifservice.clients.FOERClient;
-import com.example.mygifservice.models.Rates;
+import com.example.mygifservice.clients.RateClient;
+import com.example.mygifservice.models.RatesResponse;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,13 +16,14 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class FOERClientTest {
+class RateClientTest {
 
     @Value("${oxr.app.id}")
     private String foerAppId;
@@ -40,7 +41,7 @@ class FOERClientTest {
     private Double historicalRateExp;
 
     @MockBean
-    private FOERClient foerClient;
+    private RateClient rateClient;
 
     @BeforeEach
     public void init() throws URISyntaxException, IOException {
@@ -54,35 +55,35 @@ class FOERClientTest {
         String historicalJsonString = Files.readString(historicalPath);
 
         Gson gson = new Gson();
-        Rates latestRates = gson.fromJson(latestJsonString, Rates.class);
-        Rates historicalRates = gson.fromJson(historicalJsonString, Rates.class);
+        Optional<RatesResponse> latestRatesResponse = Optional.of(gson.fromJson(latestJsonString, RatesResponse.class));
+        Optional<RatesResponse> historicalRatesResponse = Optional.of(gson.fromJson(historicalJsonString, RatesResponse.class));
 
-        Mockito.when(foerClient.getLatestRates(foerAppId))
-                .thenReturn(latestRates);
+        Mockito.when(rateClient.getResponseRates(foerAppId))
+                .thenReturn(latestRatesResponse);
 
-        Mockito.when(foerClient.getHistoricalRates(dateYesterday,foerAppId))
-                .thenReturn(historicalRates);
+        Mockito.when(rateClient.getResponseRates(dateYesterday, foerAppId))
+                .thenReturn(historicalRatesResponse);
     }
 
     @Test
     void getLatestRates() {
 
-        Rates latestRates = foerClient.getLatestRates(foerAppId);
+        RatesResponse latestRatesResponse = rateClient.getResponseRates(foerAppId).get();
 
-        Double latestRate = latestRates.getRates().get(quotedCurrency);
+        Double latestRate = latestRatesResponse.getRates().get(quotedCurrency);
 
-        assertNotNull(latestRates);
+        assertNotNull(latestRatesResponse);
         assertEquals(latestRateExp, latestRate);
     }
 
     @Test
     void getHistoricalRates() {
 
-        Rates historicalRates = foerClient.getHistoricalRates(dateYesterday, foerAppId);
+        RatesResponse historicalRatesResponse = rateClient.getResponseRates(dateYesterday, foerAppId).get();
 
-        Double historicalRate = historicalRates.getRates().get(quotedCurrency);
+        Double historicalRate = historicalRatesResponse.getRates().get(quotedCurrency);
 
-        assertNotNull(historicalRates);
+        assertNotNull(historicalRatesResponse);
         assertEquals(historicalRateExp, historicalRate);
     }
 }

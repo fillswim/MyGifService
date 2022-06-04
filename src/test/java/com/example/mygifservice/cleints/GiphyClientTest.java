@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -40,7 +41,7 @@ class GiphyClientTest {
 
         String giphyJsonName = "static/giphyResponse.json";
         Path giphyPath = Paths.get(getClass().getResource("/" + giphyJsonName).toURI());
-        String giphyJsonString = Files.readString(giphyPath);
+        Optional<String> giphyJsonString = Optional.of(Files.readString(giphyPath));
 
         Mockito.when(giphyClient.getGif(giphyAppId, giphyTagBroke))
                 .thenReturn(giphyJsonString);
@@ -49,7 +50,7 @@ class GiphyClientTest {
     @Test
     void getGif() {
 
-        String giphyJsonString = giphyClient.getGif(giphyAppId, giphyTagBroke);
+        String giphyJsonString = giphyClient.getGif(giphyAppId, giphyTagBroke).get();
 
         JsonObject jsonObject = JsonParser.parseString(giphyJsonString).getAsJsonObject();
 

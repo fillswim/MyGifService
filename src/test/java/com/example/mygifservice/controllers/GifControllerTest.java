@@ -1,6 +1,6 @@
 package com.example.mygifservice.controllers;
 
-import com.example.mygifservice.services.GiphyService;
+import com.example.mygifservice.services.GifService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -34,7 +34,7 @@ class GifControllerTest {
     private String quotedCurrency;
 
     @MockBean
-    private GiphyService giphyService;
+    private GifService gifService;
 
 
 
@@ -46,7 +46,7 @@ class GifControllerTest {
 
         assertNotNull(bytes);
 
-        Mockito.when(giphyService.getGif(quotedCurrency))
+        Mockito.when(gifService.getGif(quotedCurrency))
                 .thenReturn(bytes);
     }
 

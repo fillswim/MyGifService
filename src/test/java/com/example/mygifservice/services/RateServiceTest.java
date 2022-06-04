@@ -1,7 +1,8 @@
 package com.example.mygifservice.services;
 
-import com.example.mygifservice.clients.FOERClient;
-import com.example.mygifservice.models.Rates;
+import com.example.mygifservice.clients.RateClient;
+import com.example.mygifservice.models.ProfitStatus;
+import com.example.mygifservice.models.RatesResponse;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +18,13 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class FOERServiceTest {
+class RateServiceTest {
 
     @Value("${oxr.app.id}")
     private String foerAppId;
@@ -37,10 +39,10 @@ class FOERServiceTest {
     private String dateYesterday;
 
     @MockBean
-    private FOERClient foerClient;
+    private RateClient rateClient;
 
     @Autowired
-    private FOERService foerService;
+    private RateService rateService;
 
     @BeforeEach
     public void init() throws URISyntaxException, IOException {
@@ -54,21 +56,21 @@ class FOERServiceTest {
         String historicalJsonString = Files.readString(historicalPath);
 
         Gson gson = new Gson();
-        Rates latestRates = gson.fromJson(latestJsonString, Rates.class);
-        Rates historicalRates = gson.fromJson(historicalJsonString, Rates.class);
+        Optional<RatesResponse> latestRatesResponse = Optional.of(gson.fromJson(latestJsonString, RatesResponse.class));
+        Optional<RatesResponse> historicalRatesResponse = Optional.of(gson.fromJson(historicalJsonString, RatesResponse.class));
 
-        Mockito.when(foerClient.getLatestRates(foerAppId))
-                .thenReturn(latestRates);
+        Mockito.when(rateClient.getResponseRates(foerAppId))
+                .thenReturn(latestRatesResponse);
 
-        Mockito.when(foerClient.getHistoricalRates(dateYesterday, foerAppId))
-                .thenReturn(historicalRates);
+        Mockito.when(rateClient.getResponseRates(dateYesterday, foerAppId))
+                .thenReturn(historicalRatesResponse);
     }
 
     @Test
     void getRateStatus() {
 
-        String profitStatus = foerService.getRateStatus(quotedCurrency);
+        ProfitStatus profitStatus = rateService.getRateStatus(quotedCurrency);
 
-        assertEquals(giphyTagBroke, profitStatus);
+        assertEquals(ProfitStatus.BROKE, profitStatus);
     }
 }
