@@ -1,11 +1,23 @@
 # MyGifService
 
+#### Live Demo: [http://ec2-3-72-235-121.eu-central-1.compute.amazonaws.com:8080/swagger-ui/index.html/](http://ec2-3-72-235-121.eu-central-1.compute.amazonaws.com:8080/swagger-ui/index.html)
+
 ### Swagger UI
 <p align="center">
   <img src="images/Swagger_UI.gif"/>
 </p>
 
-### Run in Docker
+### Option No. 1: Pull docker image from Docker Hub and run
+1. Pull docker image
+```bash
+docker pull fillswim/mygifservice:latest
+```
+2. Running a docker image on port 8080
+```bash
+docker run --name mygifservice --rm --detach --publish 8080:8080 fillswim/mygifservice:latest
+```
+
+### Option No. 2: Build Docker
 1. Build project in .jar
 ```bash
 cd TT_GifService
