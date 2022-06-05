@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
 @RestController
@@ -28,10 +27,10 @@ public class GifController {
     @ApiOperation(value = "Get gif by currency code")
     @GetMapping(value = "/{currencyCode}", produces = MediaType.IMAGE_GIF_VALUE)
     public ResponseEntity<byte[]> getGif(
-            @Valid @Pattern(regexp = "[A-Z]{3}", message = "The format of the currency code must be ХХХ")
+            @Pattern(regexp = "^[A-Z]{3}$", message = "The format of the currency code must be ХХХ")
             @PathVariable("currencyCode") String currencyCode) {
 
-        byte[] array = gifService.getGif(currencyCode);
+        byte[] array = gifService.getGif(currencyCode);;
 
         ResponseEntity<byte[]> responseEntity = ResponseEntity
                 .ok()
