@@ -2,7 +2,7 @@ package com.example.mygifservice.models;
 
 public enum ProfitStatus {
 
-    REACH,
+    RICH,
     BROKE,
     ZERO
 
