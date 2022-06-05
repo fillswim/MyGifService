@@ -48,10 +48,8 @@ public class RateService {
 
         double latestRate = getRateFromRates(latestRatesResponse, currencyCode);
 
-        log.info("IN getRateStatus() - historicalRate: {}, latestRate: {}", historicalRate, latestRate);
-
         if (latestRate > historicalRate) {
-            return ProfitStatus.REACH;
+            return ProfitStatus.RICH;
         } else if (latestRate < historicalRate) {
             return ProfitStatus.BROKE;
         } else {

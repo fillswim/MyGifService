@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URL;
 
-import static com.example.mygifservice.models.ProfitStatus.BROKE;
-import static com.example.mygifservice.models.ProfitStatus.REACH;
-
 @Service
 public class GifService {
 
@@ -24,8 +21,8 @@ public class GifService {
     @Value("${giphy.app.id}")
     private String giphyAppId;
 
-    @Value("${giphy.tag.reach}")
-    private String giphyTagReach;
+    @Value("${giphy.tag.rich}")
+    private String giphyTagRich;
 
     @Value("${giphy.tag.broke}")
     private String giphyTagBroke;
@@ -39,7 +36,7 @@ public class GifService {
         this.linkService = linkService;
     }
 
-    public byte[] getGif(String currencyCode) {
+    public byte[] getGif(@NonNull String currencyCode) {
 
         ProfitStatus profitStatus = rateService.getRateStatus(currencyCode);
 
@@ -49,8 +46,8 @@ public class GifService {
             case BROKE:
                 giphyServiceResponse = loadResponseFromGiphy(giphyTagBroke);
                 break;
-            case REACH:
-                giphyServiceResponse = loadResponseFromGiphy(giphyTagReach);
+            case RICH:
+                giphyServiceResponse = loadResponseFromGiphy(giphyTagRich);
                 break;
             default:
                 giphyServiceResponse = loadResponseFromGiphy(giphyTagZero);
