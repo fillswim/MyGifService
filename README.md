@@ -1,13 +1,7 @@
 # MyGifService
 
 ### Swagger UI
-
-[//]: # (<p>)
-
-[//]: # (  <img src="images/Swagger_UI.jpg"/>)
-
-[//]: # (</p>)
-<p>
+<p align="center">
   <img src="images/Swagger_UI.gif"/>
 </p>
 
