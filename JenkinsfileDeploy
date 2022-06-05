@@ -1,0 +1,54 @@
+pipeline {
+    agent {
+        label 'prod'
+    }
+    options {
+        skipDefaultCheckout()
+    }
+
+    stages {
+        stage('Docker stop') {
+            steps {
+                echo "========== Docker-compose down =========="
+                sh 'docker stop mygifservice'
+            }
+        }
+
+        stage('Remove old docker image') {
+            steps {
+                echo "====== Remove old image ======"
+                sh 'docker rmi -f fillswim/mygifservice:latest'
+            }
+        }
+
+//        stage('Load docker-compose.yaml') {
+//            steps {
+//                echo "====== Load docker-compose.yaml ======"
+//                sh 'rm -f docker-compose.yaml'
+//                sh 'wget https://raw.githubusercontent.com/fillswim/MySocialNetworkingSite/master/docker-compose.yaml'
+//            }
+//        }
+
+//        stage('Docker login') {
+//            steps {
+//                echo "======== Docker login ========"
+//                sh 'cat /home/ubuntu/docker_password.txt | docker login --username fillswim --password-stdin'
+//            }
+//        }
+
+        stage('Docker pull') {
+            steps {
+                echo "======== Docker pull ========"
+                sh 'fillswim/mygifservice:latest'
+            }
+        }
+
+        stage('Docker run') {
+            steps {
+                echo "======== Docker run ========"
+                sh 'docker run --name mygifservice --rm --detach --publish 8080:8080 fillswim/mygifservice:latest'
+            }
+        }
+
+    }
+}

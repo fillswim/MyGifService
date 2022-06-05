@@ -1,0 +1,48 @@
+pipeline {
+    agent {
+        label 'gradle'
+    }
+
+    stages {
+        stage('Gradle build') {
+            steps {
+                echo "========== Build =========="
+
+                // Package with tests
+                sh './gradlew build'
+
+                // Package without test (skip tests)
+//                sh './gradlew build'
+            }
+        }
+
+        stage('Remove old docker image') {
+            steps {
+                echo "====== Remove old image ======"
+                sh 'docker stop mygifservice'
+                sh 'docker rmi -f fillswim/mygifservice:latest'
+            }
+        }
+
+        stage('Docker build') {
+            steps {
+                echo "==== Docker build ===="
+                sh 'docker build -t fillswim/mygifservice:latest .'
+            }
+        }
+
+        stage('Docker login') {
+            steps {
+                echo "======== Docker login ========"
+                sh 'cat /home/ubuntu/docker_password.txt | docker login --username fillswim --password-stdin'
+            }
+        }
+
+        stage('Push') {
+            steps {
+                echo "======== Docker push ========"
+                sh 'docker push fillswim/mygifservice:latest'
+            }
+        }
+    }
+}
