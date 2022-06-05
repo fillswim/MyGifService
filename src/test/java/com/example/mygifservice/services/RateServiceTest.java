@@ -18,6 +18,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,14 +30,11 @@ class RateServiceTest {
     @Value("${oxr.app.id}")
     private String foerAppId;
 
-    @Value("${giphy.tag.broke}")
-    private String giphyTagBroke;
-
     @Value("${currency.quoted}")
     private String quotedCurrency;
 
-    @Value("${test.date}")
-    private String dateYesterday;
+    @Value("${app.day.daysbefore}")
+    private int daysBefore;
 
     @MockBean
     private RateClient rateClient;
@@ -46,6 +44,8 @@ class RateServiceTest {
 
     @BeforeEach
     public void init() throws URISyntaxException, IOException {
+
+        LocalDate localDate = LocalDate.now().minusDays(daysBefore);
 
         String latestJsonName = "static/latest.json";
         Path latestPath = Paths.get(getClass().getResource("/" + latestJsonName).toURI());
@@ -62,15 +62,15 @@ class RateServiceTest {
         Mockito.when(rateClient.getResponseRates(foerAppId))
                 .thenReturn(latestRatesResponse);
 
-        Mockito.when(rateClient.getResponseRates(dateYesterday, foerAppId))
+        Mockito.when(rateClient.getResponseRates(localDate.toString(), foerAppId))
                 .thenReturn(historicalRatesResponse);
     }
 
-//    @Test
-//    void getRateStatus() {
-//
-//        ProfitStatus profitStatus = rateService.getRateStatus(quotedCurrency);
-//
-//        assertEquals(ProfitStatus.BROKE, profitStatus);
-//    }
+    @Test
+    void getRateStatus() {
+
+        ProfitStatus profitStatus = rateService.getRateStatus(quotedCurrency);
+
+        assertEquals(ProfitStatus.BROKE, profitStatus);
+    }
 }

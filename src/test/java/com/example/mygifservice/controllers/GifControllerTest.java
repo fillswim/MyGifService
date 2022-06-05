@@ -3,17 +3,20 @@ package com.example.mygifservice.controllers;
 import com.example.mygifservice.services.GifService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 
@@ -24,10 +27,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @SpringBootTest
-@AutoConfigureMockMvc
+@RunWith(SpringRunner.class)
 class GifControllerTest {
 
     @Autowired
+    private WebApplicationContext webApplicationContext;
     private MockMvc mockMvc;
 
     @Value("${currency.quoted}")
@@ -36,10 +40,10 @@ class GifControllerTest {
     @MockBean
     private GifService gifService;
 
-
-
     @BeforeEach
     public void init() throws IOException {
+
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         Resource fileResource = new ClassPathResource("static/giphy.gif");
         byte[] bytes = fileResource.getInputStream().readAllBytes();
