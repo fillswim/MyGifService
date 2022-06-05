@@ -1,5 +1,6 @@
 package com.example.mygifservice.cleints;
 
+import com.example.mygifservice.AbstractTest;
 import com.example.mygifservice.clients.GiphyClient;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -13,16 +14,13 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class GiphyClientTest {
+class GiphyClientTest extends AbstractTest {
 
     @Value("${giphy.tag.broke}")
     private String giphyTagBroke;
@@ -39,9 +37,7 @@ class GiphyClientTest {
     @BeforeEach
     public void init() throws URISyntaxException, IOException {
 
-        String giphyJsonName = "static/giphyResponse.json";
-        Path giphyPath = Paths.get(getClass().getResource("/" + giphyJsonName).toURI());
-        Optional<String> giphyJsonString = Optional.of(Files.readString(giphyPath));
+        Optional<String> giphyJsonString = Optional.of(jsonFromResourcesToString("static/giphyResponseBroke.json"));
 
         Mockito.when(giphyClient.getGif(giphyAppId, giphyTagBroke))
                 .thenReturn(giphyJsonString);

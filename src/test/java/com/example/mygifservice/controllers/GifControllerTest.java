@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +46,7 @@ class GifControllerTest {
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-        Resource fileResource = new ClassPathResource("static/giphy.gif");
+        Resource fileResource = new ClassPathResource("static/giphyBroke.gif");
         byte[] bytes = fileResource.getInputStream().readAllBytes();
 
         assertNotNull(bytes);
@@ -55,13 +56,29 @@ class GifControllerTest {
     }
 
     @Test
-    void getGif() throws Exception {
+    void getGif_Ok() throws Exception {
 
-        Resource fileResource = new ClassPathResource("static/giphy.gif");
+        Resource fileResource = new ClassPathResource("static/giphyBroke.gif");
 
         mockMvc.perform(get("/api/gifs/" + quotedCurrency))
                 .andExpect(content().contentType(MediaType.IMAGE_GIF))
                 .andExpect(status().isOk())
                 .andExpect(content().bytes(fileResource.getInputStream().readAllBytes()));
+    }
+
+    @Test
+    void getGif_NotFound() throws Exception {
+
+        mockMvc.perform(get("/api/gifs"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getGif_BadRequest() throws Exception {
+
+        mockMvc.perform(get("/api/gifs/Rub"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }

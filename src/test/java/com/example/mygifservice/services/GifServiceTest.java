@@ -1,8 +1,9 @@
 package com.example.mygifservice.services;
 
+import com.example.mygifservice.AbstractTest;
 import com.example.mygifservice.clients.GiphyClient;
+import com.example.mygifservice.exceptions.GifsNotFoundException;
 import com.example.mygifservice.models.ProfitStatus;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +14,13 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class GifServiceTest {
+class GifServiceTest extends AbstractTest {
 
     @Value("${giphy.app.id}")
     private String giphyAppId;
@@ -31,11 +28,11 @@ class GifServiceTest {
     @Value("${giphy.tag.broke}")
     private String giphyTagBroke;
 
+    @Value("${giphy.tag.rich}")
+    private String giphyTagRich;
+
     @Value("${currency.quoted}")
     private String quotedCurrency;
-
-    @Value("${test.giphy.url.right}")
-    private String rightUrl;
 
     @MockBean
     private RateService rateService;
@@ -43,45 +40,77 @@ class GifServiceTest {
     @MockBean
     private GiphyClient giphyClient;
 
-    @MockBean
-    private LinkService linkService;
-
     @Autowired
     private GifService gifService;
 
-    @BeforeEach
-    public void init() throws IOException, URISyntaxException {
+    @Test
+    void getGif_Ok_Broke() throws IOException, URISyntaxException {
 
         // FOERService answer
         Mockito.when(rateService.getRateStatus(quotedCurrency))
                 .thenReturn(ProfitStatus.BROKE);
 
         // GiphyClient answer
-        String giphyJsonName = "static/giphyResponse.json";
-        Path giphyPath = Paths.get(getClass().getResource("/" + giphyJsonName).toURI());
-        Optional<String> giphyJsonString = Optional.of(Files.readString(giphyPath));
+        Optional<String> giphyJsonString = Optional.ofNullable(jsonFromResourcesToString("static/giphyResponseBroke.json"));
 
         Mockito.when(giphyClient.getGif(giphyAppId, giphyTagBroke))
                 .thenReturn(giphyJsonString);
 
-
-        // LinkService answer
-        Mockito.when(linkService.getLink(giphyJsonString.get()))
-                .thenReturn(rightUrl);
-
-    }
-
-
-    @Test
-    void getGif() throws IOException, URISyntaxException {
-
-        String gifName = "static/giphy.gif";
-        Path gifPath = Paths.get(getClass().getResource("/" + gifName).toURI());
-        byte[] downloadByteArray = Files.readAllBytes(gifPath);
+        byte[] downloadByteArray = gifFromResourcesToByteArray("static/giphyBroke.gif");
 
         byte[] testByteArray = gifService.getGif(quotedCurrency);
 
         assertNotNull(testByteArray);
         assertEquals(downloadByteArray.length, testByteArray.length);
+    }
+
+    @Test
+    void getGif_Ok_Rich() throws IOException, URISyntaxException {
+
+        // FOERService answer
+        Mockito.when(rateService.getRateStatus(quotedCurrency))
+                .thenReturn(ProfitStatus.RICH);
+
+        // GiphyClient answer
+        Optional<String> giphyJsonString = Optional.ofNullable(jsonFromResourcesToString("static/giphyResponseRich.json"));
+
+        Mockito.when(giphyClient.getGif(giphyAppId, giphyTagRich))
+                .thenReturn(giphyJsonString);
+
+
+        byte[] downloadByteArray = gifFromResourcesToByteArray("static/giphyRich.gif");
+
+        byte[] testByteArray = gifService.getGif(quotedCurrency);
+
+        assertNotNull(testByteArray);
+        assertEquals(downloadByteArray.length, testByteArray.length);
+    }
+
+    @Test
+    void getGif_Exception() {
+
+        // FOERService answer
+        Mockito.when(rateService.getRateStatus(quotedCurrency))
+                .thenReturn(ProfitStatus.BROKE);
+
+        // GiphyClient answer
+        Optional<String> giphyJsonString = Optional.ofNullable(null);
+
+        Mockito.when(giphyClient.getGif(giphyAppId, giphyTagBroke))
+                .thenReturn(giphyJsonString);
+
+
+        GifsNotFoundException exception = assertThrows(GifsNotFoundException.class, () -> gifService.getGif(quotedCurrency));
+        assertNotNull(exception.getMessage());
+    }
+
+    @Test
+    void getGif_Null() {
+
+        String currencyCode = null;
+
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> gifService.getGif(currencyCode));
+        assertEquals("currencyCode is marked non-null but is null", exception.getMessage());
+
     }
 }
