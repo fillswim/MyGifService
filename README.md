@@ -1,8 +1,14 @@
 # MyGifService
 
 ### Swagger UI
+
+[//]: # (<p>)
+
+[//]: # (  <img src="images/Swagger_UI.jpg"/>)
+
+[//]: # (</p>)
 <p>
-  <img src="images/Swagger_UI.jpg"/>
+  <img src="images/Swagger_UI.gif"/>
 </p>
 
 ### Run in Docker
