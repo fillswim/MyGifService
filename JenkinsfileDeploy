@@ -39,7 +39,7 @@ pipeline {
         stage('Docker pull') {
             steps {
                 echo "======== Docker pull ========"
-                sh 'fillswim/mygifservice:latest'
+                sh 'docker pull fillswim/mygifservice:latest'
             }
         }
 
