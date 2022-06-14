@@ -1,9 +1,11 @@
 package com.example.mygifservice.services;
 
 import com.example.mygifservice.clients.GiphyClient;
+import com.example.mygifservice.exceptions.GifDownloadException;
 import com.example.mygifservice.exceptions.GifsNotFoundException;
 import com.example.mygifservice.models.ProfitStatus;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 
 @Service
+@RequiredArgsConstructor
 public class GifService {
 
     private final GiphyClient giphyClient;
@@ -21,38 +24,25 @@ public class GifService {
     @Value("${giphy.app.id}")
     private String giphyAppId;
 
-    @Value("${giphy.tag.rich}")
-    private String giphyTagRich;
-
-    @Value("${giphy.tag.broke}")
-    private String giphyTagBroke;
-
-    @Value("${giphy.tag.zero}")
-    private String giphyTagZero;
-
-    public GifService(GiphyClient giphyClient, RateService rateService, LinkService linkService) {
-        this.giphyClient = giphyClient;
-        this.rateService = rateService;
-        this.linkService = linkService;
-    }
-
     public byte[] getGif(@NonNull String currencyCode) {
 
-        ProfitStatus profitStatus = rateService.getRateStatus(currencyCode);
+        final ProfitStatus profitStatus = rateService.getRateStatus(currencyCode);
 
-        String giphyServiceResponse = null;
+        String giphyTag = null;
 
         switch (profitStatus) {
             case BROKE:
-                giphyServiceResponse = loadResponseFromGiphy(giphyTagBroke);
+                giphyTag = "broke";
                 break;
             case RICH:
-                giphyServiceResponse = loadResponseFromGiphy(giphyTagRich);
+                giphyTag = "rich";
                 break;
-            default:
-                giphyServiceResponse = loadResponseFromGiphy(giphyTagZero);
+            case ZERO:
+                giphyTag = "zero";
                 break;
         }
+
+        String giphyServiceResponse = loadResponseFromGiphy(giphyTag);
 
         String link = linkService.getLink(giphyServiceResponse);
 
@@ -67,12 +57,12 @@ public class GifService {
 
     private byte[] getGifBytes(@NonNull String link) {
 
-        byte[] array = new byte[0];
+        byte[] array;
 
         try {
             array = IOUtils.toByteArray(new URL(link));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException exception) {
+            throw new GifDownloadException(exception.getMessage());
         }
 
         return array;
