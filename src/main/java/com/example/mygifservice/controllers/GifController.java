@@ -3,6 +3,7 @@ package com.example.mygifservice.controllers;
 import com.example.mygifservice.services.GifService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,12 +18,9 @@ import javax.validation.constraints.Pattern;
 @RequestMapping("/api/gifs")
 @Api(tags = "Gif Controller")
 @Validated
+@RequiredArgsConstructor
 public class GifController {
     private final GifService gifService;
-
-    public GifController(GifService gifService) {
-        this.gifService = gifService;
-    }
 
     @ApiOperation(value = "Get gif by currency code")
     @GetMapping(value = "/{currencyCode}", produces = MediaType.IMAGE_GIF_VALUE)
@@ -30,14 +28,12 @@ public class GifController {
             @Pattern(regexp = "^[A-Z]{3}$", message = "The format of the currency code must be ХХХ")
             @PathVariable("currencyCode") String currencyCode) {
 
-        byte[] array = gifService.getGif(currencyCode);;
+        byte[] gif = gifService.getGif(currencyCode);
 
-        ResponseEntity<byte[]> responseEntity = ResponseEntity
+        return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_GIF)
-                .body(array);
-
-        return responseEntity;
+                .body(gif);
     }
 
 }
