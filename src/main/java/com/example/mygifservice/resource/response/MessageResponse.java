@@ -3,7 +3,9 @@ package com.example.mygifservice.resource.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-// Тело ответа сервера
+/**
+ * Server response body
+ */
 @Data
 @AllArgsConstructor
 public class MessageResponse {
