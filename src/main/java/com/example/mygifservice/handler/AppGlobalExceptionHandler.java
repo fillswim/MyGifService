@@ -5,6 +5,7 @@ import com.example.mygifservice.resource.response.MessageResponse;
 import com.google.gson.Gson;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.Map;
 
 @RestControllerAdvice
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class AppGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
