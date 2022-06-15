@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -19,10 +20,9 @@ import java.util.Map;
 @Slf4j
 public class RateService {
 
-    private final RateClient rateClient;
+    private static final int NUMBER_OF_DAYS_AGO = 1;
 
-    @Value("${app.day.daysbefore}")
-    private int daysBefore;
+    private final RateClient rateClient;
 
     @Value("${oxr.app.id}")
     private String foerAppId;
@@ -34,37 +34,37 @@ public class RateService {
 
     public ProfitStatus getRateStatus(@NonNull String currencyCode) {
 
-        LocalDate localDate = LocalDate.now().minusDays(daysBefore);
+        LocalDate localDate = LocalDate.now().minusDays(NUMBER_OF_DAYS_AGO);
 
 
         RatesResponse historicalRatesResponse = rateClient.getResponseRates(localDate.toString(), foerAppId)
                 .orElseThrow(() -> new RatesNotFoundException("Historical exchange rates for " + localDate + " were not found"));
 
-        double historicalRate = getRateFromRates(historicalRatesResponse, currencyCode);
+        BigDecimal historicalRate = getRateFromRates(historicalRatesResponse, currencyCode);
 
 
         RatesResponse latestRatesResponse = rateClient.getResponseRates(foerAppId)
                 .orElseThrow(() -> new RatesNotFoundException("The latest exchange rates were not found"));
 
-        double latestRate = getRateFromRates(latestRatesResponse, currencyCode);
+        BigDecimal latestRate = getRateFromRates(latestRatesResponse, currencyCode);
 
-        if (latestRate > historicalRate) {
+        if (latestRate.compareTo(historicalRate) > 0) {
             return ProfitStatus.RICH;
-        } else if (latestRate < historicalRate) {
+        } else if (latestRate.compareTo(historicalRate) < 0) {
             return ProfitStatus.BROKE;
         } else {
             return ProfitStatus.ZERO;
         }
     }
 
-    private double getRateFromRates(RatesResponse ratesResponse, String currencyCode) {
+    private BigDecimal getRateFromRates(RatesResponse ratesResponse, String currencyCode) {
 
-        Map<String, Double> rates = ratesResponse.getRates();
+        Map<String, BigDecimal> rates = ratesResponse.getRates();
 
         Instant instant = Instant.ofEpochSecond(ratesResponse.getTimestamp());
         LocalDate localDate = LocalDate.ofInstant(instant, ZoneId.of("Europe/Moscow"));
 
-        double rate;
+        BigDecimal rate;
 
         if (ratesResponse.getRates().containsKey(currencyCode)) {
             rate = rates.get(currencyCode);
