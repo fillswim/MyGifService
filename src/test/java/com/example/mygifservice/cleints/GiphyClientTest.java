@@ -1,7 +1,7 @@
 package com.example.mygifservice.cleints;
 
 import com.example.mygifservice.AbstractTest;
-import com.example.mygifservice.client.GiphyClient;
+import com.example.mygifservice.clients.GiphyClient;
 import com.example.mygifservice.exceptions.GifsNotFoundException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
