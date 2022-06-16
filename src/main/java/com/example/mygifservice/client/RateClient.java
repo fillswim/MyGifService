@@ -1,4 +1,4 @@
-package com.example.mygifservice.clients;
+package com.example.mygifservice.client;
 
 import com.example.mygifservice.models.RatesResponse;
 import org.springframework.cloud.openfeign.FeignClient;
