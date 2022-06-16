@@ -1,6 +1,6 @@
 package com.example.mygifservice.services;
 
-import com.example.mygifservice.clients.RateClient;
+import com.example.mygifservice.client.RateClient;
 import com.example.mygifservice.exceptions.CurrencyNotFoundException;
 import com.example.mygifservice.exceptions.RatesNotFoundException;
 import com.example.mygifservice.models.ProfitStatus;

@@ -1,6 +1,6 @@
 package com.example.mygifservice.services;
 
-import com.example.mygifservice.clients.GiphyClient;
+import com.example.mygifservice.client.GiphyClient;
 import com.example.mygifservice.exceptions.GifDownloadException;
 import com.example.mygifservice.exceptions.GifsNotFoundException;
 import com.example.mygifservice.models.ProfitStatus;
