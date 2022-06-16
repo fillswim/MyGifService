@@ -1,7 +1,8 @@
 package com.example.mygifservice.cleints;
 
 import com.example.mygifservice.AbstractTest;
-import com.example.mygifservice.clients.GiphyClient;
+import com.example.mygifservice.client.GiphyClient;
+import com.example.mygifservice.exceptions.GifsNotFoundException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +47,8 @@ class GiphyClientTest extends AbstractTest {
     @Test
     void getGif() {
 
-        String giphyJsonString = giphyClient.getGif(giphyAppId, giphyTagBroke).get();
+        String giphyJsonString = giphyClient.getGif(giphyAppId, giphyTagBroke)
+                .orElseThrow(() -> new GifsNotFoundException("Gifs with the tag " + giphyTagBroke + " were not found"));
 
         JsonObject jsonObject = JsonParser.parseString(giphyJsonString).getAsJsonObject();
 

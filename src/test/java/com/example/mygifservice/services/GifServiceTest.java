@@ -1,7 +1,7 @@
 package com.example.mygifservice.services;
 
 import com.example.mygifservice.AbstractTest;
-import com.example.mygifservice.clients.GiphyClient;
+import com.example.mygifservice.client.GiphyClient;
 import com.example.mygifservice.exceptions.GifsNotFoundException;
 import com.example.mygifservice.models.ProfitStatus;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class GifServiceTest extends AbstractTest {
     @MockBean
     private RateService rateService;
 
-    @MockBean
+    @MockBean // FIXME SB нужны веские основания для такой аннотации. Лучше стандартные средства mockito использовать
     private GiphyClient giphyClient;
 
     @Autowired

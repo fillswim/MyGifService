@@ -1,7 +1,8 @@
 package com.example.mygifservice.cleints;
 
 import com.example.mygifservice.AbstractTest;
-import com.example.mygifservice.clients.RateClient;
+import com.example.mygifservice.client.RateClient;
+import com.example.mygifservice.exceptions.RatesNotFoundException;
 import com.example.mygifservice.models.RatesResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
@@ -32,10 +34,10 @@ class RateClientTest extends AbstractTest {
     private String dateYesterday;
 
     @Value("${test.rate.latest}")
-    private Double latestRateExp;
+    private BigDecimal latestRateExp;
 
     @Value("${test.rate.historical}")
-    private Double historicalRateExp;
+    private BigDecimal historicalRateExp;
 
     @MockBean
     private RateClient rateClient;
@@ -56,9 +58,10 @@ class RateClientTest extends AbstractTest {
     @Test
     void getLatestRates() {
 
-        RatesResponse latestRatesResponse = rateClient.getResponseRates(foerAppId).get();
+        RatesResponse latestRatesResponse = rateClient.getResponseRates(foerAppId)
+                .orElseThrow(() -> new RatesNotFoundException("The latest exchange rates were not found"));
 
-        Double latestRate = latestRatesResponse.getRates().get(quotedCurrency);
+        BigDecimal latestRate = latestRatesResponse.getRates().get(quotedCurrency);
 
         assertNotNull(latestRatesResponse);
         assertEquals(latestRateExp, latestRate);
@@ -67,9 +70,10 @@ class RateClientTest extends AbstractTest {
     @Test
     void getHistoricalRates() {
 
-        RatesResponse historicalRatesResponse = rateClient.getResponseRates(dateYesterday, foerAppId).get();
+        RatesResponse historicalRatesResponse = rateClient.getResponseRates(dateYesterday, foerAppId)
+                .orElseThrow(() -> new RatesNotFoundException("Historical exchange rates for " + dateYesterday + " were not found"));
 
-        Double historicalRate = historicalRatesResponse.getRates().get(quotedCurrency);
+        BigDecimal historicalRate = historicalRatesResponse.getRates().get(quotedCurrency);
 
         assertNotNull(historicalRatesResponse);
         assertEquals(historicalRateExp, historicalRate);
