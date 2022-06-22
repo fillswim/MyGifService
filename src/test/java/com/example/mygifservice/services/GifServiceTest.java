@@ -37,7 +37,7 @@ class GifServiceTest extends AbstractTest {
     @MockBean
     private RateService rateService;
 
-    @MockBean // FIXME SB нужны веские основания для такой аннотации. Лучше стандартные средства mockito использовать
+    @MockBean
     private GiphyClient giphyClient;
 
     @Autowired
