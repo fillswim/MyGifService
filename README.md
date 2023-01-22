@@ -1,6 +1,6 @@
 # MyGifService
 
-#### Live Demo: [http://ec2-3-72-235-121.eu-central-1.compute.amazonaws.com:8080/swagger-ui/index.html/](http://ec2-3-72-235-121.eu-central-1.compute.amazonaws.com:8080/swagger-ui/index.html)
+#### Live Demo: [gifservice.fillswim.com](https://gifservice.fillswim.com/swagger-ui/index.html)
 
 ### Swagger UI
 <p align="center">
