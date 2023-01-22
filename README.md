@@ -2,6 +2,38 @@
 
 #### Live Demo: [gifservice.fillswim.com](https://gifservice.fillswim.com/swagger-ui/index.html)
 
+### For example
+1. Click "Gif Controller"
+<p align="center">
+  <img src="images/Example_RUB1.jpg"/>
+</p>
+
+2. Click "GET"
+<p align="center">
+  <img src="images/Example_RUB2.jpg"/>
+</p>
+
+3. Click "Try it out"
+<p align="center">
+  <img src="images/Example_RUB3.jpg"/>
+</p>
+
+4. Fill in the field with the currency code (for example, "RUB")
+[Supported Currencies](https://docs.openexchangerates.org/reference/supported-currencies)
+<p align="center">
+  <img src="images/Example_RUB4.jpg"/>
+</p>
+
+5. Click "Execute"
+<p align="center">
+  <img src="images/Example_RUB5.jpg"/>
+</p>
+
+6. We get the Response body
+<p align="center">
+  <img src="images/Example_RUB6.jpg"/>
+</p>
+
 ### Swagger UI
 <p align="center">
   <img src="images/Swagger_UI.gif"/>
