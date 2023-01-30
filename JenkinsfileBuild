@@ -7,7 +7,7 @@ pipeline {
         stage('Git pull') {
             steps {
                 dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-                    sh 'git pull origin master'
+                    sh 'git pull'
                 }
             }
         }
@@ -46,7 +46,7 @@ pipeline {
 
         stage('Docker push') {
             steps {
-                echo "======== Docker push2 ========"
+                echo "======== Docker push ========"
                 sh 'docker push fillswim/mygifservice:latest'
             }
         }
