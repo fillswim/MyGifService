@@ -46,7 +46,7 @@ pipeline {
 
         stage('Docker push') {
             steps {
-                echo "======== Docker push11 ========"
+                echo "======== Docker push2 ========"
                 sh 'docker push fillswim/mygifservice:latest'
             }
         }
