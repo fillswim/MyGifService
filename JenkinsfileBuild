@@ -59,29 +59,3 @@ pipeline {
 
     }
 }
-
-
-pipeline {
-    agent {
-        label 'builder'
-    }
-
-    stages {
-        stage('Git pull') {
-            steps {
-                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-                    sh 'git pull'
-                }
-            }
-        }
-
-        stage('Gradle build') {
-            steps {
-                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-                    sh './gradlew clean build'
-                }
-            }
-        }
-
-    }
-}
