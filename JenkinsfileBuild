@@ -1,48 +1,55 @@
 pipeline {
     agent {
-        label 'gradle'
+        label 'builder'
     }
 
     stages {
+        stage('Git pull') {
+            steps {
+                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+                    sh 'git pull'
+                }
+            }
+        }
+
         stage('Gradle build') {
             steps {
-                echo "========== Build =========="
-
-                // Package with tests
-                sh './gradlew build'
-
-                // Package without test (skip tests)
-//                sh './gradlew build'
+                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+                    sh './gradlew clean build'
+                }
             }
         }
 
         stage('Remove old docker image') {
             steps {
                 echo "====== Remove old image ======"
-                sh 'docker stop mygifservice'
                 sh 'docker rmi -f fillswim/mygifservice:latest'
             }
         }
 
         stage('Docker build') {
             steps {
-                echo "==== Docker build ===="
-                sh 'docker build -t fillswim/mygifservice:latest .'
+                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+                    sh 'pwd'
+                    sh 'docker build -t fillswim/mygifservice:latest .'
+                }
             }
+
         }
 
         stage('Docker login') {
             steps {
                 echo "======== Docker login ========"
-                sh 'cat /home/ubuntu/docker_password.txt | docker login --username fillswim --password-stdin'
+                sh 'cat /home/filldocker/dockerhub_token.txt | docker login --username fillswim --password-stdin'
             }
         }
 
-        stage('Push') {
+        stage('Docker push') {
             steps {
                 echo "======== Docker push ========"
                 sh 'docker push fillswim/mygifservice:latest'
             }
         }
+
     }
 }
