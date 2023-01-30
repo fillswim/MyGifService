@@ -5,9 +5,9 @@ pipeline {
 
     stages {
         stage('Git pull') {
-            echo "====== Git pull ======"
-            sh 'pwd'
             steps {
+                echo "====== Git pull ======"
+                sh 'pwd'
                 dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
                     sh 'pwd'
                     sh 'git pull'
@@ -16,8 +16,8 @@ pipeline {
         }
 
         stage('Gradle build') {
-            echo "====== Gradle build ======"
             steps {
+                echo "====== Gradle build ======"
                 sh 'pwd'
                 dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
                     sh 'pwd'
