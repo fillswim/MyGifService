@@ -5,16 +5,22 @@ pipeline {
 
     stages {
         stage('Git pull') {
+            echo "====== Git pull ======"
+            sh 'pwd'
             steps {
                 dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-                    sh 'git pull origin master'
+                    sh 'pwd'
+                    sh 'git pull'
                 }
             }
         }
 
         stage('Gradle build') {
+            echo "====== Gradle build ======"
             steps {
+                sh 'pwd'
                 dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+                    sh 'pwd'
                     sh './gradlew clean build'
                 }
             }
@@ -48,6 +54,32 @@ pipeline {
             steps {
                 echo "======== Docker push ========"
                 sh 'docker push fillswim/mygifservice:latest'
+            }
+        }
+
+    }
+}
+
+
+pipeline {
+    agent {
+        label 'builder'
+    }
+
+    stages {
+        stage('Git pull') {
+            steps {
+                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+                    sh 'git pull'
+                }
+            }
+        }
+
+        stage('Gradle build') {
+            steps {
+                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+                    sh './gradlew clean build'
+                }
             }
         }
 
