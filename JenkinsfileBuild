@@ -24,7 +24,7 @@ pipeline {
 //                    sh './gradlew clean build'
 //                }
                 dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-                    sh "pwd"
+//                    sh "pwd"
                     sh ("""./gradlew clean build""")
                 }
             }
