@@ -14,7 +14,6 @@ pipeline {
         stage('Gradle build') {
             steps {
                 echo "====== Gradle build ======"
-                sh 'pwd'
                 sh './gradlew clean build'
             }
         }
@@ -29,7 +28,6 @@ pipeline {
         stage('Docker build') {
             steps {
                 echo "====== Docker build ======"
-                sh 'pwd'
                 sh 'docker build -t fillswim/mygifservice:latest .'
             }
 
