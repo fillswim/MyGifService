@@ -19,9 +19,13 @@ pipeline {
             steps {
                 echo "====== Gradle build ======"
                 sh 'pwd'
+//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+//                    sh 'pwd'
+//                    sh './gradlew clean build'
+//                }
                 dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-                    sh 'pwd'
-                    sh './gradlew clean build'
+                    sh "pwd"
+                    sh ("""./gradlew clean build""")
                 }
             }
         }
