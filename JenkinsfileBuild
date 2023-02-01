@@ -8,6 +8,7 @@ pipeline {
             steps {
                 echo "====== Git pull ======"
                 sh '''
+                    pwd
                     cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
                     pwd
                     git pull origin master
