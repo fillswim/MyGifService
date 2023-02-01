@@ -7,12 +7,16 @@ pipeline {
         stage('Git pull') {
             steps {
                 echo "====== Git pull ======"
-                sh '''
-                    pwd
-                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
-                    pwd
-                    git pull origin master
-                '''
+                sh 'pwd'
+                sh 'git pull origin master'
+                sh 'ls -la'
+
+//                sh '''
+//                    pwd
+//                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
+//                    pwd
+//                    git pull origin master
+//                '''
 
 //                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
 //                    sh 'pwd'
@@ -21,62 +25,62 @@ pipeline {
             }
         }
 
-        stage('Gradle build') {
-            steps {
-                echo "====== Gradle build ======"
-                sh '''
-                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
-                    pwd
-                    ./gradlew clean build
-                '''
-//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-//                    sh 'pwd'
-//                    sh './gradlew clean build'
-//                }
-//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-////                    sh "pwd"
-//                    sh ("""./gradlew clean build""")
-//                }
-            }
-        }
-
-        stage('Remove old docker image') {
-            steps {
-                echo "====== Remove old image ======"
-                sh 'docker rmi -f fillswim/mygifservice:latest'
-            }
-        }
-
-        stage('Docker build') {
-            steps {
-                echo "====== Docker build ======"
-                sh 'pwd'
-                sh '''
-                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
-                    pwd
-                    docker build -t fillswim/mygifservice:latest .
-                '''
-//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-//                    sh 'pwd'
-//                    sh 'docker build -t fillswim/mygifservice:latest .'
-//                }
-            }
-
-        }
-
-        stage('Docker login') {
-            steps {
-                echo "======== Docker login ========"
-                sh 'cat /home/filldocker/dockerhub_token.txt | docker login --username fillswim --password-stdin'
-            }
-        }
-
-        stage('Docker push') {
-            steps {
-                echo "======== Docker push ========"
-                sh 'docker push fillswim/mygifservice:latest'
-            }
-        }
+//        stage('Gradle build') {
+//            steps {
+//                echo "====== Gradle build ======"
+//                sh '''
+//                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
+//                    pwd
+//                    ./gradlew clean build
+//                '''
+////                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+////                    sh 'pwd'
+////                    sh './gradlew clean build'
+////                }
+////                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+//////                    sh "pwd"
+////                    sh ("""./gradlew clean build""")
+////                }
+//            }
+//        }
+//
+//        stage('Remove old docker image') {
+//            steps {
+//                echo "====== Remove old image ======"
+//                sh 'docker rmi -f fillswim/mygifservice:latest'
+//            }
+//        }
+//
+//        stage('Docker build') {
+//            steps {
+//                echo "====== Docker build ======"
+//                sh 'pwd'
+//                sh '''
+//                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
+//                    pwd
+//                    docker build -t fillswim/mygifservice:latest .
+//                '''
+////                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+////                    sh 'pwd'
+////                    sh 'docker build -t fillswim/mygifservice:latest .'
+////                }
+//            }
+//
+//        }
+//
+//        stage('Docker login') {
+//            steps {
+//                echo "======== Docker login ========"
+//                sh 'cat /home/filldocker/dockerhub_token.txt | docker login --username fillswim --password-stdin'
+//            }
+//        }
+//
+//        stage('Docker push') {
+//            steps {
+//                echo "======== Docker push ========"
+//                sh 'docker push fillswim/mygifservice:latest'
+//            }
+//        }
 
     }
 }
