@@ -16,30 +16,15 @@ pipeline {
                 echo "====== Gradle build ======"
                 sh 'pwd'
                 sh './gradlew clean build'
-
-
-//                sh '''
-//                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
-//                    pwd
-//                    ./gradlew clean build
-//                '''
-//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-//                    sh 'pwd'
-//                    sh './gradlew clean build'
-//                }
-//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-////                    sh "pwd"
-//                    sh ("""./gradlew clean build""")
-//                }
             }
         }
-//
-//        stage('Remove old docker image') {
-//            steps {
-//                echo "====== Remove old image ======"
-//                sh 'docker rmi -f fillswim/mygifservice:latest'
-//            }
-//        }
+
+        stage('Remove old docker image') {
+            steps {
+                echo "====== Remove old image ======"
+                sh 'docker rmi -f fillswim/mygifservice:latest'
+            }
+        }
 //
 //        stage('Docker build') {
 //            steps {
