@@ -7,42 +7,32 @@ pipeline {
         stage('Git pull') {
             steps {
                 echo "====== Git pull ======"
-                sh 'pwd'
                 sh 'git pull origin master'
-                sh 'ls -la'
-
-//                sh '''
-//                    pwd
-//                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
-//                    pwd
-//                    git pull origin master
-//                '''
-
-//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-//                    sh 'pwd'
-//                    sh 'git pull origin master'
-//                }
             }
         }
 
-//        stage('Gradle build') {
-//            steps {
-//                echo "====== Gradle build ======"
+        stage('Gradle build') {
+            steps {
+                echo "====== Gradle build ======"
+                sh 'pwd'
+                sh './gradlew clean build'
+
+
 //                sh '''
 //                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
 //                    pwd
 //                    ./gradlew clean build
 //                '''
-////                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-////                    sh 'pwd'
-////                    sh './gradlew clean build'
-////                }
-////                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-//////                    sh "pwd"
-////                    sh ("""./gradlew clean build""")
-////                }
-//            }
-//        }
+//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+//                    sh 'pwd'
+//                    sh './gradlew clean build'
+//                }
+//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+////                    sh "pwd"
+//                    sh ("""./gradlew clean build""")
+//                }
+            }
+        }
 //
 //        stage('Remove old docker image') {
 //            steps {
