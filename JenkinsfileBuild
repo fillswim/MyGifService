@@ -25,23 +25,24 @@ pipeline {
                 sh 'docker rmi -f fillswim/mygifservice:latest'
             }
         }
-//
-//        stage('Docker build') {
-//            steps {
-//                echo "====== Docker build ======"
-//                sh 'pwd'
+
+        stage('Docker build') {
+            steps {
+                echo "====== Docker build ======"
+                sh 'pwd'
+                sh 'docker build -t fillswim/mygifservice:latest .'
 //                sh '''
 //                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
 //                    pwd
 //                    docker build -t fillswim/mygifservice:latest .
 //                '''
-////                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-////                    sh 'pwd'
-////                    sh 'docker build -t fillswim/mygifservice:latest .'
-////                }
-//            }
-//
-//        }
+//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+//                    sh 'pwd'
+//                    sh 'docker build -t fillswim/mygifservice:latest .'
+//                }
+            }
+
+        }
 //
 //        stage('Docker login') {
 //            steps {
