@@ -31,32 +31,23 @@ pipeline {
                 echo "====== Docker build ======"
                 sh 'pwd'
                 sh 'docker build -t fillswim/mygifservice:latest .'
-//                sh '''
-//                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
-//                    pwd
-//                    docker build -t fillswim/mygifservice:latest .
-//                '''
-//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-//                    sh 'pwd'
-//                    sh 'docker build -t fillswim/mygifservice:latest .'
-//                }
             }
 
         }
-//
-//        stage('Docker login') {
-//            steps {
-//                echo "======== Docker login ========"
-//                sh 'cat /home/filldocker/dockerhub_token.txt | docker login --username fillswim --password-stdin'
-//            }
-//        }
-//
-//        stage('Docker push') {
-//            steps {
-//                echo "======== Docker push ========"
-//                sh 'docker push fillswim/mygifservice:latest'
-//            }
-//        }
+
+        stage('Docker login') {
+            steps {
+                echo "======== Docker login ========"
+                sh 'cat /home/filldocker/dockerhub_token.txt | docker login --username fillswim --password-stdin'
+            }
+        }
+
+        stage('Docker push') {
+            steps {
+                echo "======== Docker push ========"
+                sh 'docker push fillswim/mygifservice:latest'
+            }
+        }
 
     }
 }
