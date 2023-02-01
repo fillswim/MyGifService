@@ -7,18 +7,22 @@ pipeline {
         stage('Git pull') {
             steps {
                 echo "====== Git pull ======"
-                sh 'pwd'
-                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
-                    sh 'pwd'
-                    sh 'git pull origin master'
-                }
+                sh '''
+                    cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
+                    pwd
+                    git pull origin master
+                '''
+
+//                dir('/home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService'){
+//                    sh 'pwd'
+//                    sh 'git pull origin master'
+//                }
             }
         }
 
         stage('Gradle build') {
             steps {
                 echo "====== Gradle build ======"
-                sh 'pwd'
                 sh '''
                     cd /home/filldocker/jenkins/workspace/GifServiceBuild/MyGifService
                     pwd
