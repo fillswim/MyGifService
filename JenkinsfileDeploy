@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'prod'
+        label 'node1'
     }
     options {
         skipDefaultCheckout()
@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Docker stop') {
             steps {
-                echo "========== Docker-compose down =========="
+                echo "========== Docker stop =========="
                 sh 'docker stop mygifservice'
             }
         }
