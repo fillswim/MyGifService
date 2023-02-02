@@ -21,21 +21,6 @@ pipeline {
             }
         }
 
-//        stage('Load docker-compose.yaml') {
-//            steps {
-//                echo "====== Load docker-compose.yaml ======"
-//                sh 'rm -f docker-compose.yaml'
-//                sh 'wget https://raw.githubusercontent.com/fillswim/MySocialNetworkingSite/master/docker-compose.yaml'
-//            }
-//        }
-
-//        stage('Docker login') {
-//            steps {
-//                echo "======== Docker login ========"
-//                sh 'cat /home/ubuntu/docker_password.txt | docker login --username fillswim --password-stdin'
-//            }
-//        }
-
         stage('Docker pull') {
             steps {
                 echo "======== Docker pull ========"
