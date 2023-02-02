@@ -16,7 +16,7 @@ pipeline {
 
         stage('Remove old docker image') {
             steps {
-                echo "====== Remove old image ======"
+                echo "====== Remove old docker image ======"
                 sh 'docker rmi -f fillswim/mygifservice:latest'
             }
         }
