@@ -3,6 +3,10 @@ pipeline {
         label 'builder'
     }
 
+    tools {
+        gradle 'Gradle 8.1.1'
+    }
+
     stages {
         stage('Git pull') {
             steps {
@@ -23,7 +27,7 @@ pipeline {
             steps {
                 echo "====== Gradle build ======"
                 withGradle {
-                    sh './gradlew clean build'
+                    sh 'gradle clean build'
                 }
             }
         }
