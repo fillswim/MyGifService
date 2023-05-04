@@ -11,11 +11,20 @@ pipeline {
             }
         }
 
+//        stage('Gradle build') {
+//            steps {
+//                echo "====== Gradle build ======"
+//                sh 'gradle wrapper'
+//                sh './gradlew clean build'
+//            }
+//        }
+
         stage('Gradle build') {
             steps {
                 echo "====== Gradle build ======"
-                sh 'gradle wrapper'
-                sh './gradlew clean build'
+                withGradle {
+                    sh './gradlew clean build'
+                }
             }
         }
 
