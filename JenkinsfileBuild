@@ -47,9 +47,21 @@ pipeline {
         }
 
         stage('Docker push') {
+
+            environment {
+                DISCRORD_WEBHOOK_LINK = credentials('Discord_webhook')
+            }
+
             steps {
                 echo "======== Docker push ========"
                 sh 'docker push fillswim/mygifservice:latest'
+
+                discordSend description: "GifService Build",
+                link: env.BUILD_URL,
+                result: currentBuild.currentResult,
+                title: JOB_NAME,
+                webhookURL: DISCRORD_WEBHOOK_LINK
+
             }
         }
 
