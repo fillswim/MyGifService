@@ -28,7 +28,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("My Gif Service")
                 .description("\"Rest API for Gif Service\"")
-                .version("0.0.8")
+                .version("0.0.9")
                 .license("Apache License Version 2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
                 .build();
