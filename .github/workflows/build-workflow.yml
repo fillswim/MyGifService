@@ -14,8 +14,8 @@ jobs:
             - name: Git clone gifservice repository
               uses: actions/checkout@v1
             
-            - name: List current folder
-              run: ls -la
+            #- name: List current folder
+            #  run: ls -la
 
             - name: Install Java
               uses: actions/setup-java@v3
