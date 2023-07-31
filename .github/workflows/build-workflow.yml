@@ -8,6 +8,7 @@ on:
 jobs:
     gifservice-build:
         runs-on: ubuntu-latest
+        #runs-on: self-hosted # Self-hosted runner
 
         steps:
 
