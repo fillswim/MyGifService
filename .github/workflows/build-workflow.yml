@@ -16,3 +16,12 @@ jobs:
             
             - name: List current folder
               run: ls -la
+
+            - name: Install Java
+              uses: actions/setup-java@v3
+              with:
+                distribution: temurin
+                java-version: 11
+            
+            - name: Check Java version
+              run: java -version
