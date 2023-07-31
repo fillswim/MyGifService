@@ -35,8 +35,11 @@ jobs:
             - name: Build with Gradle wrapper
               run: ./gradlew build
 
-            - name: Install tree 
-              run: sudo apt install -y tree
+            #- name: Install tree 
+            #  run: sudo apt install -y tree
+
+            #- name: List current folder after Build
+            #  run: tree
 
             - name: List current folder after Build
-              run: tree
+              run: ls -la build/libs/
