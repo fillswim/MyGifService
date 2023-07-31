@@ -15,7 +15,7 @@ jobs:
               uses: actions/checkout@v1
             
             - name: List current folder before Build
-              run: ls -la /build/libs/
+              run: ls -la
 
             - name: Install Java
               uses: actions/setup-java@v3
