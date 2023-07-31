@@ -14,8 +14,8 @@ jobs:
             - name: Git clone gifservice repository
               uses: actions/checkout@v1
             
-            #- name: List current folder
-            #  run: ls -la
+            - name: List current folder before Build
+              run: ls -la ./build/libs/
 
             - name: Install Java
               uses: actions/setup-java@v3
@@ -31,3 +31,9 @@ jobs:
 
             - name: Check Gradle version
               run: ./gradlew --version
+
+            - name: Build with Gradle wrapper
+              run: ./gradlew build
+
+            - name: List current folder after Build
+              run: ls -la ./build/libs/
