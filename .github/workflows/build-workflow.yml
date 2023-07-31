@@ -26,8 +26,17 @@ jobs:
             - name: Check Java version
               run: java -version
 
-            - name: Setup Gradle
-              uses: gradle/gradle-build-action@v2
+            - name: Change wrapper permissions
+              run: chmod +x ./gradlew
+            
+            - name: Init gradle wrapper
+              run: gradle wrapper
+            
+            - name: Change wrapper permissions
+              run: chmod +x ./gradlew
+            
+            #- name: Build with Gradle wrapper
+            #  run: ./gradlew build
 
             - name: Check Gradle version
               run: ./gradlew --version
