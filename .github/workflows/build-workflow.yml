@@ -36,7 +36,7 @@ jobs:
               run: ./gradlew build
 
             - name: Install tree 
-              run: apt install tree
+              run: sudo apt install -y tree
 
             - name: List current folder after Build
               run: tree
