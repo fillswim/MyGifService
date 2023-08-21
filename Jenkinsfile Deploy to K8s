@@ -20,6 +20,7 @@ pipeline {
                 sh 'hostname'
                 sh 'pwd'
                 sh 'ls -la'
+                sh 'ls -la ./HelmChart_values_gifservice.yaml'
                 ansiColor('xterm') {
                     ansiblePlaybook(
                         playbook: '/home/fill/ansible/Template_File_Copy.yaml',
