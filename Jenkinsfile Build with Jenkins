@@ -8,9 +8,9 @@ pipeline {
     }
 
     environment {
+        DOCKERHUB_USERNAME  = 'fillswim'
         DOCKER_IMAGE_NAME   = 'mygifservice'
         DOCKER_IMAGE_TAG    = 'latest'
-        DOCKERHUB_USERNAME  = 'fillswim'
     }
 
     stages {
@@ -33,15 +33,14 @@ pipeline {
         stage('Remove old docker image') {
             steps {
                 echo "====== Remove old image ======"
-                sh 'echo ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}'
-                sh 'docker rmi -f fillswim/mygifservice:latest'
+                sh 'docker rmi -f ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}'
             }
         }
 
         stage('Docker build') {
             steps {
                 echo "====== Docker build ======"
-                sh 'docker build -t fillswim/mygifservice:latest .'
+                sh 'docker build -t ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .'
             }
 
         }
@@ -57,19 +56,19 @@ pipeline {
 
         stage('Docker push') {
 
-            environment {
-                DISCRORD_WEBHOOK_LINK = credentials('Discord_webhook')
-            }
+            // environment {
+            //     DISCRORD_WEBHOOK_LINK = credentials('Discord_webhook')
+            // }
 
             steps {
                 echo "======== Docker push ========"
-                sh 'docker push fillswim/mygifservice:latest'
+                sh 'docker push ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}'
 
-                discordSend description: "GifService Build",
-                link: env.BUILD_URL,
-                result: currentBuild.currentResult,
-                title: JOB_NAME,
-                webhookURL: DISCRORD_WEBHOOK_LINK
+                // discordSend description: "GifService Build",
+                // link: env.BUILD_URL,
+                // result: currentBuild.currentResult,
+                // title: JOB_NAME,
+                // webhookURL: DISCRORD_WEBHOOK_LINK
 
             }
         }
