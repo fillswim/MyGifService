@@ -26,7 +26,7 @@ pipeline {
                         extraVars: [
                             //helm_name: 'my-gifservice',
                             host: 'k8s_master1',
-                            source_file: 'HelmChart_values_gifservice.yaml',
+                            source_file: '/HelmChart_values_gifservice.yaml',
                             destin_file: '/tmp'
                             // file: '/home/fill/K8SManifests/HelmChart_values_gifservice.yaml'
                             //file: '/tmp/HelmChart_values_gifservice.yaml'
