@@ -1,0 +1,13 @@
+# Gigservice values for my template Helm Chart
+container:
+  image: fillswim/mygifservice:latest             # {{ .Values.container.image }}
+
+containerPort: 8080                               # {{ .Values.containerPort }}
+
+servicePort: 8080                                 # {{ .Values.servicePort }}
+
+cpuUtilization: 50                                # {{ .Values.cpuUtilization }}
+
+memoryUtilization: 80                             # {{ .Values.memoryUtilization }}
+
+host: gifservice.fillswim.com                     # {{ .Values.host }}
