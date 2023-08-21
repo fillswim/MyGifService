@@ -17,6 +17,7 @@ pipeline {
 
         stage('Copy file with values to K8s Master') {
             steps {
+                sh 'ls -la'
                 ansiColor('xterm') {
                     ansiblePlaybook(
                         playbook: '/home/fill/ansible/Template_File_Copy.yaml',
