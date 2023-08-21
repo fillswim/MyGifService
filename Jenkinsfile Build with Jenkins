@@ -8,8 +8,9 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE    = 'sqlite'
-        DOCKERHUB_USERNAME = 'fillswim'
+        DOCKER_IMAGE        = 'sqlite'
+        DOCKERHUB_USERNAME  = 'fillswim'
+        DOCKER_REGISTRY     = 'docker.io'
     }
 
     stages {
@@ -50,7 +51,7 @@ pipeline {
                 // sh 'cat /home/filldocker/dockerhub_token.txt | docker login --username fillswim --password-stdin'
                 sh 'echo ${DOCKERHUB_USERNAME}'
                 sh 'echo ${TEST_PASSWORD}'
-                //sh 'docker login --username ${DOCKERHUB_USERNAME} --password-stdin'
+                sh 'docker login --username ${DOCKERHUB_USERNAME} --password ${DOCKERHUB_TOKEN} ${DOCKER_REGISTRY}'
             }
         }
 
