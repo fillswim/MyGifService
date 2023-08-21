@@ -2,7 +2,9 @@ pipeline {
     agent {
         label 'ansible'
     }
+
     stages {
+
         stage('Copy file with values') {
             steps {
                 sh 'hostname'
@@ -10,9 +12,7 @@ pipeline {
                 sh 'ls -la'
             }
         }
-    }
 
-    stages {
         stage('Helm install GifService') {
             steps {
                 ansiColor('xterm') {
