@@ -48,8 +48,8 @@ pipeline {
             steps {
                 echo "======== Docker login ========"
                 // sh 'cat /home/filldocker/dockerhub_token.txt | docker login --username fillswim --password-stdin'
-                echo ${DOCKERHUB_USERNAME}
-                echo ${TEST_PASSWORD}
+                sh 'echo ${DOCKERHUB_USERNAME}'
+                sh 'echo ${TEST_PASSWORD}'
                 //sh 'docker login --username ${DOCKERHUB_USERNAME} --password-stdin'
             }
         }
