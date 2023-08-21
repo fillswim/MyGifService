@@ -19,7 +19,7 @@ pipeline {
             steps {
                 ansiColor('xterm') {
                     ansiblePlaybook(
-                        playbook: '/home/fill/ansible/Template_File_Copy.yml',
+                        playbook: '/home/fill/ansible/Template_File_Copy.yaml',
                         inventory: '/home/fill/ansible/hosts.txt',
                         credentialsId: 'Jenkins_PrivateKey',
                         extraVars: [
