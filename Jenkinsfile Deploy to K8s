@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Copy file with values') {
             steps {
-                sh 'la -la'
+                sh 'ls -la'
             }
         }
     }
