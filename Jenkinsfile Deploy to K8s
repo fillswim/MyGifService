@@ -10,30 +10,30 @@ pipeline {
                 sh 'hostname'
                 sh 'pwd'
                 sh 'ls -la'
-                sh 'wget https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml'
-                sh 'ls -la'
+                //sh 'wget https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml'
+                //sh 'ls -la'
             }
         }
 
-        //stage('Copy file with values to K8s Master') {
-        //    steps {
-        //        ansiColor('xterm') {
-        //            ansiblePlaybook(
-        //                playbook: '/home/fill/ansible/Template_File_Copy.yml',
-        //                inventory: '/home/fill/ansible/hosts.txt',
-        //                credentialsId: 'Jenkins_PrivateKey',
-        //                extraVars: [
-        //                    //helm_name: 'my-gifservice',
-        //                    host: 'k8s_master1',
-        //                    source_file: 'mygifservice-jenkins',
-        //                    destin_file: 'mygifservice-jenkins',
-        //                    // file: '/home/fill/K8SManifests/HelmChart_values_gifservice.yaml'
-        //                    //file: '/tmp/HelmChart_values_gifservice.yaml'
-        //                ],
-        //                colorized: true)
-        //        }
-        //    }
-        //}
+        stage('Copy file with values to K8s Master') {
+            steps {
+                ansiColor('xterm') {
+                    ansiblePlaybook(
+                        playbook: '/home/fill/ansible/Template_File_Copy.yml',
+                        inventory: '/home/fill/ansible/hosts.txt',
+                        credentialsId: 'Jenkins_PrivateKey',
+                        extraVars: [
+                            //helm_name: 'my-gifservice',
+                            host: 'k8s_master1',
+                            source_file: './HelmChart_values_gifservice.yaml',
+                            destin_file: '/tmp'
+                            // file: '/home/fill/K8SManifests/HelmChart_values_gifservice.yaml'
+                            //file: '/tmp/HelmChart_values_gifservice.yaml'
+                        ],
+                        colorized: true)
+                }
+            }
+        }
 
         //stage('Helm install GifService') {
         //    steps {
