@@ -5,6 +5,8 @@ pipeline {
     stages {
         stage('Copy file with values') {
             steps {
+                sh 'hostname'
+                sh 'pwd'
                 sh 'ls -la'
             }
         }
