@@ -7,6 +7,11 @@ pipeline {
         gradle 'Gradle 8.1.1'
     }
 
+    environment {
+        DOCKER_IMAGE    = 'sqlite'
+        DOCKERHUB_USERNAME = 'fillswim'
+    }
+
     stages {
         stage('Git pull') {
             steps {
@@ -42,28 +47,31 @@ pipeline {
         stage('Docker login') {
             steps {
                 echo "======== Docker login ========"
-                sh 'cat /home/filldocker/dockerhub_token.txt | docker login --username fillswim --password-stdin'
+                // sh 'cat /home/filldocker/dockerhub_token.txt | docker login --username fillswim --password-stdin'
+                echo ${DOCKERHUB_USERNAME}
+                echo ${TEST_PASSWORD}
+                //sh 'docker login --username ${DOCKERHUB_USERNAME} --password-stdin'
             }
         }
 
-        stage('Docker push') {
-
-            environment {
-                DISCRORD_WEBHOOK_LINK = credentials('Discord_webhook')
-            }
-
-            steps {
-                echo "======== Docker push ========"
-                sh 'docker push fillswim/mygifservice:latest'
-
-                discordSend description: "GifService Build",
-                link: env.BUILD_URL,
-                result: currentBuild.currentResult,
-                title: JOB_NAME,
-                webhookURL: DISCRORD_WEBHOOK_LINK
-
-            }
-        }
+        //stage('Docker push') {
+//
+        //    environment {
+        //        DISCRORD_WEBHOOK_LINK = credentials('Discord_webhook')
+        //    }
+//
+        //    steps {
+        //        echo "======== Docker push ========"
+        //        sh 'docker push fillswim/mygifservice:latest'
+//
+        //        discordSend description: "GifService Build",
+        //        link: env.BUILD_URL,
+        //        result: currentBuild.currentResult,
+        //        title: JOB_NAME,
+        //        webhookURL: DISCRORD_WEBHOOK_LINK
+//
+        //    }
+        //}
 
     }
 }
