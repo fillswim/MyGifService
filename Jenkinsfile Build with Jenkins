@@ -8,9 +8,9 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE        = 'sqlite'
+        DOCKER_IMAGE_NAME   = 'mygifservice'
+        DOCKER_IMAGE_TAG    = 'latest'
         DOCKERHUB_USERNAME  = 'fillswim'
-        DOCKER_REGISTRY     = 'docker.io'
     }
 
     stages {
@@ -33,6 +33,7 @@ pipeline {
         stage('Remove old docker image') {
             steps {
                 echo "====== Remove old image ======"
+                sh 'echo ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}'
                 sh 'docker rmi -f fillswim/mygifservice:latest'
             }
         }
@@ -51,32 +52,27 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh 'docker login --username $USERNAME --password $PASSWORD'
                 }
-                // sh 'cat /home/filldocker/dockerhub_token.txt | docker login --username fillswim --password-stdin'
-                //sh 'echo ${DOCKERHUB_USERNAME}'
-                //sh 'echo ${TEST_PASSWORD}'
-                // sh 'docker login --username ${DOCKERHUB_USERNAME} --password ${DOCKERHUB_TOKEN}'
-                //sh 'echo "$DOCKERHUB_TOKEN" | docker login --username ${DOCKERHUB_USERNAME} --password-stdin'
             }
         }
 
-        //stage('Docker push') {
-//
-        //    environment {
-        //        DISCRORD_WEBHOOK_LINK = credentials('Discord_webhook')
-        //    }
-//
-        //    steps {
-        //        echo "======== Docker push ========"
-        //        sh 'docker push fillswim/mygifservice:latest'
-//
-        //        discordSend description: "GifService Build",
-        //        link: env.BUILD_URL,
-        //        result: currentBuild.currentResult,
-        //        title: JOB_NAME,
-        //        webhookURL: DISCRORD_WEBHOOK_LINK
-//
-        //    }
-        //}
+        stage('Docker push') {
+
+            environment {
+                DISCRORD_WEBHOOK_LINK = credentials('Discord_webhook')
+            }
+
+            steps {
+                echo "======== Docker push ========"
+                sh 'docker push fillswim/mygifservice:latest'
+
+                discordSend description: "GifService Build",
+                link: env.BUILD_URL,
+                result: currentBuild.currentResult,
+                title: JOB_NAME,
+                webhookURL: DISCRORD_WEBHOOK_LINK
+
+            }
+        }
 
     }
 }
