@@ -1,0 +1,24 @@
+pipeline {
+    agent {
+        label 'ansible'
+    }
+
+    stages {
+        stage('Helm install GifService') {
+            steps {
+                ansiColor('xterm') {
+                    ansiblePlaybook(
+                        playbook: '/home/fill/ansible/Helm_Template_Install.yml',
+                        inventory: '/home/fill/ansible/hosts.txt',
+                        credentialsId: 'Jenkins_PrivateKey',
+                        extraVars: [
+                            helm_name: 'my-gifservice',
+                            helm_namespace: 'mygifservice-jenkins',
+                            file: '/home/fill/K8SManifests/HelmChart_values_gifservice.yaml'
+                        ],
+                        colorized: true)
+                }
+            }
+        }
+    }
+}
