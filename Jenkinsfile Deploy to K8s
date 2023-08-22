@@ -11,7 +11,6 @@ pipeline {
         HOST                = 'k8s_master1' 
         INVENTORY_FILE      = '/home/fill/ansible/hosts.txt'
         URL_FILE            = 'https://raw.githubusercontent.com/${USERNAME}/${PROJECT}/${BRANCH}/${FILE}'
-        //URL_FILE                 = 'https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml'
         DESTINATION_PATH    = './K8s_tmp'
     }
 
@@ -26,7 +25,6 @@ pipeline {
                         credentialsId: 'Jenkins_PrivateKey',
                         extraVars: [
                             host: '${HOST}',
-                            //url: 'https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml',
                             url: '${URL_FILE}',
                             destin_file: '${DESTINATION_PATH}'
                         ],
@@ -35,22 +33,22 @@ pipeline {
             }
         }
 
-        //stage('Helm install GifService') {
-        //    steps {
-        //        ansiColor('xterm') {
-        //            ansiblePlaybook(
-        //                playbook: '/home/fill/ansible/Helm_Template_Install.yml',
-        //                inventory: '/home/fill/ansible/hosts.txt',
-        //                credentialsId: 'Jenkins_PrivateKey',
-        //                extraVars: [
-        //                    helm_name: 'my-gifservice',
-        //                    helm_namespace: 'mygifservice-jenkins',
-        //                    // file: '/home/fill/K8SManifests/HelmChart_values_gifservice.yaml'
-        //                    file: '/tmp/HelmChart_values_gifservice.yaml'
-        //                ],
-        //                colorized: true)
-        //        }
-        //    }
-        //}
+        stage('Helm install GifService') {
+            steps {
+                ansiColor('xterm') {
+                    ansiblePlaybook(
+                        playbook: '/home/fill/ansible/Helm_Template_Install.yml',
+                        inventory: '/home/fill/ansible/hosts.txt',
+                        credentialsId: 'Jenkins_PrivateKey',
+                        extraVars: [
+                            helm_name: 'my-gifservice',
+                            helm_namespace: 'mygifservice-jenkins',
+                            // file: '/home/fill/K8SManifests/HelmChart_values_gifservice.yaml'
+                            file: '${DESTINATION_PATH}/${FILE}'
+                        ],
+                        colorized: true)
+                }
+            }
+        }
     }
 }
