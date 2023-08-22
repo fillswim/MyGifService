@@ -14,6 +14,7 @@ pipeline {
         DESTINATION_PATH    = './K8s_tmp'
 
         HELM_NAME           = 'my-gifservice'
+        HELM_REPO_NAME      = 'fillswimrepo/my-template-helmchart'
         NAMESPACE           = 'mygifservice-jenkins'
     }
 
@@ -40,11 +41,13 @@ pipeline {
             steps {
                 ansiColor('xterm') {
                     ansiblePlaybook(
-                        playbook: '/home/fill/ansible/Helm_Template_Install.yml',
+                        playbook: '/home/fill/ansible/Template_Helm_Install.yml',
                         inventory: '${INVENTORY_FILE}',
                         credentialsId: 'Jenkins_PrivateKey',
                         extraVars: [
+                            host: '${HOST}',
                             helm_name: '${HELM_NAME}',
+                            helm_repo_name: '${HELM_REPO_NAME}'
                             helm_namespace: '${NAMESPACE}',
                             file: '${DESTINATION_PATH}/${FILE}'
                         ],
