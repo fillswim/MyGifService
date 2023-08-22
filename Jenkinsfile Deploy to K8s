@@ -5,35 +5,31 @@ pipeline {
 
     stages {
 
-        stage('Download file with values') {
-            steps {
-                sh 'hostname'
-                sh 'pwd'
-                sh 'ls -la'
-                //sh 'wget https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml'
-                //sh 'ls -la'
-            }
-        }
+        //stage('Download file with values') {
+        //    steps {
+        //        sh 'hostname'
+        //        sh 'pwd'
+        //        sh 'ls -la'
+        //        //sh 'wget https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml'
+        //        //sh 'ls -la'
+        //    }
+        //}
 
-        stage('Copy file with values to K8s Master') {
+        stage('Download file') {
             steps {
-                sh 'hostname'
-                sh 'pwd'
-                sh 'ls -la'
-                sh 'ls -la ./HelmChart_values_gifservice.yaml'
+                //sh 'hostname'
+                //sh 'pwd'
+                //sh 'ls -la'
+                //sh 'ls -la ./HelmChart_values_gifservice.yaml'
                 ansiColor('xterm') {
                     ansiblePlaybook(
-                        playbook: '/home/fill/ansible/Template_File_Copy.yaml',
+                        playbook: '/home/fill/ansible/Template_Download_File.yaml',
                         inventory: '/home/fill/ansible/hosts.txt',
                         credentialsId: 'Jenkins_PrivateKey',
                         extraVars: [
-                            //helm_name: 'my-gifservice',
                             host: 'k8s_master1',
-                            //source_file: '/HelmChart_values_gifservice.yaml',
-                            //source_file: 'log.txt',
-                            //destin_file: '/tmp'
-                            // file: '/home/fill/K8SManifests/HelmChart_values_gifservice.yaml'
-                            //file: '/tmp/HelmChart_values_gifservice.yaml'
+                            url: 'https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml',
+                            destin_file: './K8s_tmp'
                         ],
                         colorized: true)
                 }
