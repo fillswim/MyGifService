@@ -41,7 +41,7 @@ pipeline {
             }
         }
 
-        stage('Helm install GifService') {
+        stage('Helm install/upgrade GifService') {
             steps {
                 ansiColor('xterm') {
                     ansiblePlaybook(
