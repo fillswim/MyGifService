@@ -47,7 +47,7 @@ pipeline {
                         extraVars: [
                             host: '${HOST}',
                             helm_name: '${HELM_NAME}',
-                            helm_repo_name: '${HELM_REPO_NAME}'
+                            helm_repo_name: '${HELM_REPO_NAME}',
                             helm_namespace: '${NAMESPACE}',
                             file: '${DESTINATION_PATH}/${FILE}'
                         ],
