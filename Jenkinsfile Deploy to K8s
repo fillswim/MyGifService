@@ -3,27 +3,22 @@ pipeline {
         label 'ansible'
     }
 
-    stages {
+    environment {
+        USERNAME    = 'fillswim'
+        PROJECT     = 'MyGifService'
+        branch      = 'master'
+        FILE        = 'HelmChart_values_gifservice.yaml'
+        PLAYBOOK    = '/home/fill/ansible/Template_Download_File.yaml'
+    }
 
-        //stage('Download file with values') {
-        //    steps {
-        //        sh 'hostname'
-        //        sh 'pwd'
-        //        sh 'ls -la'
-        //        //sh 'wget https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml'
-        //        //sh 'ls -la'
-        //    }
-        //}
+    stages {
 
         stage('Download file') {
             steps {
-                //sh 'hostname'
-                //sh 'pwd'
-                //sh 'ls -la'
-                //sh 'ls -la ./HelmChart_values_gifservice.yaml'
                 ansiColor('xterm') {
                     ansiblePlaybook(
-                        playbook: '/home/fill/ansible/Template_Download_File.yaml',
+                        //playbook: '/home/fill/ansible/Template_Download_File.yaml',
+                        playbook: '${PLAYBOOK}',
                         inventory: '/home/fill/ansible/hosts.txt',
                         credentialsId: 'Jenkins_PrivateKey',
                         extraVars: [
