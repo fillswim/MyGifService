@@ -4,12 +4,16 @@ pipeline {
     }
 
     environment {
+        ANSIBLE_PATH        = '/home/fill/ansible'
+        INVENTORY_FILE      = '/home/fill/ansible/hosts.txt'
+        CREDENTIALS_NAME    = 'Jenkins_PrivateKey'
+
         USERNAME            = 'fillswim'
         PROJECT             = 'MyGifService'
         BRANCH              = 'master'
         FILE                = 'HelmChart_values_gifservice.yaml'
         HOST                = 'k8s_master1' 
-        INVENTORY_FILE      = '/home/fill/ansible/hosts.txt'
+        
         URL_FILE            = 'https://raw.githubusercontent.com/${USERNAME}/${PROJECT}/${BRANCH}/${FILE}'
         DESTINATION_PATH    = './K8s_tmp'
 
@@ -24,9 +28,9 @@ pipeline {
             steps {
                 ansiColor('xterm') {
                     ansiblePlaybook(
-                        playbook: '/home/fill/ansible/Template_Download_File.yaml',
+                        playbook: '${ANSIBLE_PATH}/Template_Download_File.yaml',
                         inventory: '${INVENTORY_FILE}',
-                        credentialsId: 'Jenkins_PrivateKey',
+                        credentialsId: '${CREDENTIALS_NAME}',
                         extraVars: [
                             host: '${HOST}',
                             url: '${URL_FILE}',
@@ -41,9 +45,9 @@ pipeline {
             steps {
                 ansiColor('xterm') {
                     ansiblePlaybook(
-                        playbook: '/home/fill/ansible/Template_Helm_Install.yml',
+                        playbook: '${ANSIBLE_PATH}/Template_Helm_Install.yml',
                         inventory: '${INVENTORY_FILE}',
-                        credentialsId: 'Jenkins_PrivateKey',
+                        credentialsId: '${CREDENTIALS_NAME}',
                         extraVars: [
                             host: '${HOST}',
                             helm_name: '${HELM_NAME}',
