@@ -41,6 +41,8 @@ pipeline {
             }
         }
 
+        // helm uninstall my-gifservice --namespace mygifservice-jenkins
+
         stage('Helm install/upgrade GifService') {
             steps {
                 ansiColor('xterm') {
