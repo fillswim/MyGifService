@@ -10,8 +10,8 @@ pipeline {
         FILE                = 'HelmChart_values_gifservice.yaml'
         HOST                = 'k8s_master1' 
         INVENTORY_FILE      = '/home/fill/ansible/hosts.txt'
-        //URL                 = 'https://raw.githubusercontent.com/''${USERNAME}''/''${PROJECT}''/''${BRANCH}''/''${FILE}'
-        URL                 = 'https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml'
+        //URL_FILE                 = 'https://raw.githubusercontent.com/''${USERNAME}''/''${PROJECT}''/''${BRANCH}''/''${FILE}'
+        URL_FILE                 = 'https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml'
         DESTINATION_PATH    = './K8s_tmp'
     }
 
@@ -27,7 +27,7 @@ pipeline {
                         extraVars: [
                             host: '${HOST}',
                             //url: 'https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml',
-                            url: '${URL}',
+                            url: '${URL_FILE}',
                             destin_file: '${DESTINATION_PATH}'
                         ],
                         colorized: true)
