@@ -4,11 +4,14 @@ pipeline {
     }
 
     environment {
-        USERNAME    = 'fillswim'
-        PROJECT     = 'MyGifService'
-        branch      = 'master'
-        FILE        = 'HelmChart_values_gifservice.yaml'
-        PLAYBOOK    = '/home/fill/ansible/Template_Download_File.yaml'
+        USERNAME            = 'fillswim'
+        PROJECT             = 'MyGifService'
+        BRANCH              = 'master'
+        FILE                = 'HelmChart_values_gifservice.yaml'
+        HOST                = 'k8s_master1' 
+        INVENTORY_FILE      = '/home/fill/ansible/hosts.txt'
+        URL                 = 'https://raw.githubusercontent.com/${USERNAME}/${PROJECT}/${BRANCH}/${FILE}'
+        DESTINATION_PATH    = './K8s_tmp'
     }
 
     stages {
@@ -17,14 +20,14 @@ pipeline {
             steps {
                 ansiColor('xterm') {
                     ansiblePlaybook(
-                        //playbook: '/home/fill/ansible/Template_Download_File.yaml',
-                        playbook: '${PLAYBOOK}',
-                        inventory: '/home/fill/ansible/hosts.txt',
+                        playbook: '/home/fill/ansible/Template_Download_File.yaml',
+                        inventory: '${INVENTORY_FILE}',
                         credentialsId: 'Jenkins_PrivateKey',
                         extraVars: [
-                            host: 'k8s_master1',
-                            url: 'https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml',
-                            destin_file: './K8s_tmp'
+                            host: '${HOST}',
+                            //url: 'https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml',
+                            url: '${URL}',
+                            destin_file: '${DESTINATION_PATH}'
                         ],
                         colorized: true)
                 }
