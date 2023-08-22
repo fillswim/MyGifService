@@ -12,6 +12,9 @@ pipeline {
         INVENTORY_FILE      = '/home/fill/ansible/hosts.txt'
         URL_FILE            = 'https://raw.githubusercontent.com/${USERNAME}/${PROJECT}/${BRANCH}/${FILE}'
         DESTINATION_PATH    = './K8s_tmp'
+
+        HELM_NAME           = 'my-gifservice'
+        NAMESPACE           = 'mygifservice-jenkins'
     }
 
     stages {
@@ -38,12 +41,11 @@ pipeline {
                 ansiColor('xterm') {
                     ansiblePlaybook(
                         playbook: '/home/fill/ansible/Helm_Template_Install.yml',
-                        inventory: '/home/fill/ansible/hosts.txt',
+                        inventory: '${INVENTORY_FILE}',
                         credentialsId: 'Jenkins_PrivateKey',
                         extraVars: [
-                            helm_name: 'my-gifservice',
-                            helm_namespace: 'mygifservice-jenkins',
-                            // file: '/home/fill/K8SManifests/HelmChart_values_gifservice.yaml'
+                            helm_name: '${HELM_NAME}',
+                            helm_namespace: '${NAMESPACE}',
                             file: '${DESTINATION_PATH}/${FILE}'
                         ],
                         colorized: true)
